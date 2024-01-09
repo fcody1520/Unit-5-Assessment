@@ -5,7 +5,7 @@ import { Animal, Human } from './model.js';
 export const query1 = await Human.findByPk(2);
 
 // Get the first animal whose species is "fish"
-export const query2 = await Animal.findByPk(5);
+export const query2 = await Animal.findAll({where: {species: 'fish'}});
 
 // Get all animals belonging to the human with primary key 5
 export const query3 = await Animal.findAll({
@@ -40,8 +40,35 @@ export const query8 = await Human.findAll({
 // Continue reading the instructions before you move on!
 
 // Print a directory of humans and their animals
-export async function printHumansAndAnimals() {}
+export async function printHumansAndAnimals() {
+    const humansWithAnimals = await Human.findAll({include: Animal});
+
+    humansWithAnimals.forEach((human) => {
+        console.log(`${human.getFullName()}`);
+        
+        human.Animals.forEach((animal) => {
+            console.log(`-${animal.name}, ${animal.species}`);
+        })
+    })
+}
 
 // Return a Set containing the full names of all humans
 // with animals of the given species.
-export async function getHumansByAnimalSpecies(species) {}
+export async function getHumansByAnimalSpecies(species) {
+    const humans = await Human.findAll({
+        include: [{
+            model: Animal,
+            where: {species: species},
+            required: true
+        }],
+        attributes:['fname', 'lname']
+    })
+
+    const humanNames = new Set();
+
+    humans.forEach((human) => {
+        humanNames.add(human.getFullName())
+    })
+
+    return humanNames
+}
