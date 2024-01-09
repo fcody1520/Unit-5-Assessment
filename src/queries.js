@@ -5,7 +5,7 @@ import { Animal, Human } from './model.js';
 export const query1 = await Human.findByPk(2);
 
 // Get the first animal whose species is "fish"
-export const query2 = await Animal.findAll({where: {species: 'fish'}});
+export const query2 = await Animal.findOne({where: {species: 'fish'}});
 
 // Get all animals belonging to the human with primary key 5
 export const query3 = await Animal.findAll({
@@ -14,7 +14,11 @@ export const query3 = await Animal.findAll({
 
 // Get all animals born in a year greater than (but not equal to) 2015.
 export const query4 = await Animal.findAll({
-    where: {birth_year: {[Op.gt]: 2015}}
+    where: {
+        birthYear: {
+            [Op.gt]: 2015
+        }
+    }
 });
 
 // Get all the humans with first names that start with "J"
@@ -24,7 +28,7 @@ export const query5 = await Human.findAll({
 
 // Get all the animals who don't have a birth year
 export const query6 = await Animal.findAll({
-    where: {birth_year: {[Op.is]: null}}
+    where: {birthYear: {[Op.is]: null}}
 });
 
 // Get all the animals with species "fish" OR "rabbit"

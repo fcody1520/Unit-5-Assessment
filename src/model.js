@@ -63,7 +63,7 @@ Animal.init(
       type: DataTypes.STRING,
       allowNull: false
     },
-    birth_year:{
+    birthYear:{
       type: DataTypes.INTEGER
     }
   },
